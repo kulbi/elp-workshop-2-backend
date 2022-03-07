@@ -17,6 +17,7 @@ export class AppController {
     temperature: number;
     pressure: number;
     humidity: number;
+    country: string;
   }> {
     if (!lat) {
       throw new HttpException('lat is required', 400);
@@ -25,8 +26,16 @@ export class AppController {
       throw new HttpException('lon is required', 400);
     }
 
+    // TODO: move to separate service file
+    // TODO: use another service if alternateApi flag is provided
+    // TODO: let both services uses same interface (Adapter pattern)
+    // class OpenWeatherService implements WeatherService {
+    // class AnotherOpenWeatherService implements WeatherService {
+    // TODO: implememnt WeatherService interface
     const response = await axios.request<{
       main: { temp: number; pressure: number; humidity: number };
+      sys: { country: string };
+      name: string;
     }>({
       method: 'GET',
       url: 'https://community-open-weather-map.p.rapidapi.com/weather',
@@ -45,6 +54,8 @@ export class AppController {
       temperature: response.data.main.temp,
       pressure: response.data.main.pressure,
       humidity: response.data.main.humidity,
+      country: response.data.sys.country,
+      name: response.data.name,
     };
 
     return returnedObject;
