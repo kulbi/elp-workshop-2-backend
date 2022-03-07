@@ -1,16 +1,3 @@
-describe('#GET example', () => {
-  it('returns example object', () => {
-    // given
-    apiIsAvailable();
-
-    //when
-    const request = getExample();
-
-    //then
-    resultIs(request, { example: true });
-  });
-});
-
 describe('#GET current_weather', () => {
   it('should return valid datatypes from Open Weather Map API', () => {
     // given
@@ -143,30 +130,4 @@ describe('#GET current_weather', () => {
   });
 });
 
-function givenWeatherApiRespondsWith(body: any) {
-  cy.intercept(
-    'GET',
-    'https://community-open-weather-map.p.rapidapi.com/weather',
-    {
-      statusCode: 201,
-      body: body,
-    },
-  );
-}
-
 function apiIsAvailable() {}
-
-function getExample(): Cypress.Chainable<Cypress.Response<any>> {
-  return cy.request('GET', `http://localhost:3001/example`);
-}
-
-async function resultIs(
-  request: Cypress.Chainable<Cypress.Response<any>>,
-  result: any,
-) {
-  request.should((response) => {
-    cy.log(response.body, 'body');
-    cy.log(result, 'result');
-    expect(response.body).to.eql(result);
-  });
-}

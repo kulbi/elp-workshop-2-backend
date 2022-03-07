@@ -3,11 +3,6 @@ import axios from 'axios';
 
 @Controller()
 export class AppController {
-  @Get('/example')
-  getHello() {
-    return { example: true };
-  }
-
   @Get('/current_weather')
   async getCurrentWeather(
     @Query('lat') lat: number,
@@ -35,12 +30,6 @@ export class AppController {
       throw new HttpException('longitude out of range', 400);
     }
 
-    // TODO: move to separate service file
-    // TODO: use another service if alternateApi flag is provided
-    // TODO: let both services uses same interface (Adapter pattern)
-    // class OpenWeatherService implements WeatherService {
-    // class AnotherOpenWeatherService implements WeatherService {
-    // TODO: implememnt WeatherService interface
     if (alternateSource === 'false') {
       const response = await axios.request<{
         main: { temp: number; pressure: number; humidity: number };
