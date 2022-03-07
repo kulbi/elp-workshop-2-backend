@@ -35,4 +35,4 @@ lerna-debug.log*
 !.vscode/extensions.json
 
 # env
-# .env //for the sake of exercise - this was not hidden. In real world application it would not be passed
+.env 
