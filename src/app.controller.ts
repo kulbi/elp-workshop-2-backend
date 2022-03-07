@@ -20,10 +20,19 @@ export class AppController {
     source: string;
   }> {
     if (!lat) {
-      throw new HttpException('lat is required', 400);
+      throw new HttpException('lat parameter is required', 400);
     }
     if (!lon) {
-      throw new HttpException('lon is required', 400);
+      throw new HttpException('lon parameter is required', 400);
+    }
+    if (!alternateSource) {
+      throw new HttpException('alternateSource parameter is required', 400);
+    }
+    if (lat < -90 || lat > 90) {
+      throw new HttpException('latitude out of range', 400);
+    }
+    if (lon < -180 || lon > 180) {
+      throw new HttpException('longitude out of range', 400);
     }
 
     // TODO: move to separate service file
@@ -77,7 +86,7 @@ export class AppController {
       const returnedObject = {
         temperature: response.data.currently.temperature,
         pressure: response.data.currently.pressure,
-        humidity: response.data.currently.humidity,
+        humidity: response.data.currently.humidity * 100,
         source: 'Dark Sky',
       };
       return returnedObject;
